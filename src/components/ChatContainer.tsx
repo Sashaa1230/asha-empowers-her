@@ -47,16 +47,27 @@ const ChatContainer = () => {
 
   // Function to generate responses based on user input
   const generateResponse = (userMessage: string): string | JSX.Element => {
-    const lowerCaseMessage = userMessage.toLowerCase();
+    // Handle empty or very short inputs
+    if (!userMessage.trim()) {
+      return "I'm here to help! Feel free to ask me about job opportunities, events, mentorship programs, or resources for women's professional development.";
+    }
+    
+    const lowerCaseMessage = userMessage.toLowerCase().trim();
+    
+    // Handle one-word responses and acknowledgments
+    const acknowledgments = ['ok', 'okay', 'k', 'sure', 'yes', 'yeah', 'yep', 'no', 'nope', 'alright', 'fine', 'good'];
+    if (acknowledgments.includes(lowerCaseMessage)) {
+      return "Is there anything specific about women's career opportunities, events, or mentorship programs you'd like to know about? I'm here to help!";
+    }
     
     // Handle greetings
     const greetingPatterns = ['hello', 'hi', 'hey', 'greetings', 'howdy', 'hola', 'namaste', 'sup'];
-    if (greetingPatterns.some(pattern => lowerCaseMessage.includes(pattern))) {
+    if (greetingPatterns.some(pattern => lowerCaseMessage.includes(pattern)) || lowerCaseMessage === 'hi' || lowerCaseMessage === 'hello') {
       return "Hello! I'm ASHA, the AI assistant for JobsForHer Foundation. How can I help you today? You can ask me about job opportunities, events, mentorship programs, or resources for women's professional growth.";
     }
 
     // Handle casual conversations
-    if (['how are you', 'how\'s it going', 'how are things'].some(pattern => lowerCaseMessage.includes(pattern))) {
+    if (['how are you', 'how\'s it going', 'how are things', 'whats up', 'what\'s up'].some(pattern => lowerCaseMessage.includes(pattern))) {
       return "I'm doing well, thank you for asking! I'm here and ready to assist you with information about job opportunities, events, mentorship programs, or resources for women's career development. What can I help you with today?";
     }
 
@@ -70,8 +81,25 @@ const ChatContainer = () => {
       return "Goodbye! Feel free to return anytime you need assistance with your career journey. Have a great day!";
     }
     
+    // Handle help requests
+    if (['help', 'assist', 'support', 'guidance', 'confused', 'lost'].some(pattern => lowerCaseMessage.includes(pattern))) {
+      return (
+        <>
+          <p>I'm here to help! Here are some things you can ask me about:</p>
+          <ul className="list-disc ml-6 mt-2 space-y-1">
+            <li>Job opportunities for women</li>
+            <li>Upcoming events and workshops</li>
+            <li>Mentorship programs</li>
+            <li>Women empowerment resources</li>
+            <li>Career development advice</li>
+          </ul>
+          <p className="mt-2">What would you like to know more about?</p>
+        </>
+      );
+    }
+    
     // Original response logic
-    if (lowerCaseMessage.includes("job") || lowerCaseMessage.includes("work") || lowerCaseMessage.includes("career")) {
+    if (lowerCaseMessage.includes("job") || lowerCaseMessage.includes("work") || lowerCaseMessage.includes("career") || lowerCaseMessage.includes("employ")) {
       const jobsResponse = (
         <>
           <p>I found some job opportunities that might interest you:</p>
@@ -90,7 +118,7 @@ const ChatContainer = () => {
         </>
       );
       return jobsResponse;
-    } else if (lowerCaseMessage.includes("event") || lowerCaseMessage.includes("workshop") || lowerCaseMessage.includes("webinar")) {
+    } else if (lowerCaseMessage.includes("event") || lowerCaseMessage.includes("workshop") || lowerCaseMessage.includes("webinar") || lowerCaseMessage.includes("meet")) {
       const eventsResponse = (
         <>
           <p>Here are some upcoming events you might be interested in:</p>
@@ -111,7 +139,7 @@ const ChatContainer = () => {
         </>
       );
       return eventsResponse;
-    } else if (lowerCaseMessage.includes("mentor") || lowerCaseMessage.includes("guidance")) {
+    } else if (lowerCaseMessage.includes("mentor") || lowerCaseMessage.includes("guidance") || lowerCaseMessage.includes("coach")) {
       const mentorshipResponse = (
         <>
           <p>We have several mentorship programs available:</p>
@@ -134,7 +162,7 @@ const ChatContainer = () => {
       return mentorshipResponse;
     } else if (lowerCaseMessage.includes("empower") || lowerCaseMessage.includes("women") || lowerCaseMessage.includes("resource")) {
       return "JobsForHer Foundation is dedicated to empowering women in their career journeys. We offer resources on leadership development, work-life balance, career advancement strategies, and return-to-work programs. Would you like to explore any of these areas?";
-    } else if (lowerCaseMessage.includes("help") || lowerCaseMessage.includes("question") || lowerCaseMessage.includes("?")) {
+    } else if (lowerCaseMessage.includes("question") || lowerCaseMessage.includes("?")) {
       // Return a random FAQ for demonstration
       const randomFaq = faqs[Math.floor(Math.random() * faqs.length)];
       return `${randomFaq.question}\n\n${randomFaq.answer}`;
