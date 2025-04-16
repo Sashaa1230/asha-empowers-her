@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from "react";
 import ChatMessage from "./ChatMessage";
 import ChatInput from "./ChatInput";
@@ -55,34 +54,40 @@ const ChatContainer = () => {
     const lowerCaseMessage = userMessage.toLowerCase().trim();
     
     // Handle one-word responses and acknowledgments
-    const acknowledgments = ['ok', 'okay', 'k', 'sure', 'yes', 'yeah', 'yep', 'no', 'nope', 'alright', 'fine', 'good'];
-    if (acknowledgments.includes(lowerCaseMessage)) {
-      return "Is there anything specific about women's career opportunities, events, or mentorship programs you'd like to know about? I'm here to help!";
+    const positiveAcknowledgments = ['ok', 'okay', 'k', 'sure', 'yes', 'yeah', 'yep', 'alright', 'fine', 'good', 'great', 'perfect', 'cool', 'awesome', 'nice', 'all good'];
+    const negativeAcknowledgments = ['no', 'nope', 'nah', 'nothing', 'not really', 'not now'];
+    
+    if (positiveAcknowledgments.includes(lowerCaseMessage) || positiveAcknowledgments.some(word => lowerCaseMessage === word)) {
+      return "Great! Is there anything specific you'd like to know about job opportunities, events, mentorship programs, or women's empowerment resources? I'm here to help!";
     }
     
-    // Handle greetings
-    const greetingPatterns = ['hello', 'hi', 'hey', 'greetings', 'howdy', 'hola', 'namaste', 'sup'];
-    if (greetingPatterns.some(pattern => lowerCaseMessage.includes(pattern)) || lowerCaseMessage === 'hi' || lowerCaseMessage === 'hello') {
+    if (negativeAcknowledgments.includes(lowerCaseMessage) || negativeAcknowledgments.some(word => lowerCaseMessage === word)) {
+      return "I understand. I'm here whenever you need information about job opportunities, upcoming events, mentorship programs, or resources for women's professional development. Feel free to ask any questions!";
+    }
+    
+    // Handle greetings - expanded to catch more variations
+    const greetingPatterns = ['hello', 'hi', 'hey', 'greetings', 'howdy', 'hola', 'namaste', 'sup', 'yo', 'good morning', 'good afternoon', 'good evening', 'good day'];
+    if (greetingPatterns.some(pattern => lowerCaseMessage.includes(pattern)) || greetingPatterns.some(word => lowerCaseMessage === word)) {
       return "Hello! I'm ASHA, the AI assistant for JobsForHer Foundation. How can I help you today? You can ask me about job opportunities, events, mentorship programs, or resources for women's professional growth.";
     }
 
     // Handle casual conversations
-    if (['how are you', 'how\'s it going', 'how are things', 'whats up', 'what\'s up'].some(pattern => lowerCaseMessage.includes(pattern))) {
+    if (['how are you', 'how\'s it going', 'how are things', 'whats up', 'what\'s up', 'how do you do', 'how have you been', 'doing well', 'hope you\'re well'].some(pattern => lowerCaseMessage.includes(pattern))) {
       return "I'm doing well, thank you for asking! I'm here and ready to assist you with information about job opportunities, events, mentorship programs, or resources for women's career development. What can I help you with today?";
     }
 
     // Handle thank you messages
-    if (['thank', 'thanks', 'appreciate'].some(pattern => lowerCaseMessage.includes(pattern))) {
+    if (['thank', 'thanks', 'appreciate', 'grateful', 'thx'].some(pattern => lowerCaseMessage.includes(pattern))) {
       return "You're welcome! I'm happy to help. Is there anything else you'd like to know about JobsForHer Foundation's services or resources?";
     }
 
     // Handle goodbye messages
-    if (['bye', 'goodbye', 'see you', 'talk later'].some(pattern => lowerCaseMessage.includes(pattern))) {
+    if (['bye', 'goodbye', 'see you', 'talk later', 'farewell', 'cya', 'ttyl', 'take care', 'until next time'].some(pattern => lowerCaseMessage.includes(pattern))) {
       return "Goodbye! Feel free to return anytime you need assistance with your career journey. Have a great day!";
     }
     
     // Handle help requests
-    if (['help', 'assist', 'support', 'guidance', 'confused', 'lost'].some(pattern => lowerCaseMessage.includes(pattern))) {
+    if (['help', 'assist', 'support', 'guidance', 'confused', 'lost', 'idk', 'i don\'t know', 'what can you do', 'what should i ask'].some(pattern => lowerCaseMessage.includes(pattern))) {
       return (
         <>
           <p>I'm here to help! Here are some things you can ask me about:</p>
@@ -99,7 +104,7 @@ const ChatContainer = () => {
     }
     
     // Original response logic
-    if (lowerCaseMessage.includes("job") || lowerCaseMessage.includes("work") || lowerCaseMessage.includes("career") || lowerCaseMessage.includes("employ")) {
+    if (lowerCaseMessage.includes("job") || lowerCaseMessage.includes("work") || lowerCaseMessage.includes("career") || lowerCaseMessage.includes("employ") || lowerCaseMessage.includes("position") || lowerCaseMessage.includes("vacancy") || lowerCaseMessage.includes("hiring")) {
       const jobsResponse = (
         <>
           <p>I found some job opportunities that might interest you:</p>
@@ -118,7 +123,7 @@ const ChatContainer = () => {
         </>
       );
       return jobsResponse;
-    } else if (lowerCaseMessage.includes("event") || lowerCaseMessage.includes("workshop") || lowerCaseMessage.includes("webinar") || lowerCaseMessage.includes("meet")) {
+    } else if (lowerCaseMessage.includes("event") || lowerCaseMessage.includes("workshop") || lowerCaseMessage.includes("webinar") || lowerCaseMessage.includes("meet") || lowerCaseMessage.includes("conference") || lowerCaseMessage.includes("session") || lowerCaseMessage.includes("seminar")) {
       const eventsResponse = (
         <>
           <p>Here are some upcoming events you might be interested in:</p>
@@ -139,7 +144,7 @@ const ChatContainer = () => {
         </>
       );
       return eventsResponse;
-    } else if (lowerCaseMessage.includes("mentor") || lowerCaseMessage.includes("guidance") || lowerCaseMessage.includes("coach")) {
+    } else if (lowerCaseMessage.includes("mentor") || lowerCaseMessage.includes("guidance") || lowerCaseMessage.includes("coach") || lowerCaseMessage.includes("advise") || lowerCaseMessage.includes("counsel") || lowerCaseMessage.includes("guide")) {
       const mentorshipResponse = (
         <>
           <p>We have several mentorship programs available:</p>
@@ -160,16 +165,16 @@ const ChatContainer = () => {
         </>
       );
       return mentorshipResponse;
-    } else if (lowerCaseMessage.includes("empower") || lowerCaseMessage.includes("women") || lowerCaseMessage.includes("resource")) {
+    } else if (lowerCaseMessage.includes("empower") || lowerCaseMessage.includes("women") || lowerCaseMessage.includes("resource") || lowerCaseMessage.includes("support") || lowerCaseMessage.includes("equity") || lowerCaseMessage.includes("equality") || lowerCaseMessage.includes("diversity")) {
       return "JobsForHer Foundation is dedicated to empowering women in their career journeys. We offer resources on leadership development, work-life balance, career advancement strategies, and return-to-work programs. Would you like to explore any of these areas?";
-    } else if (lowerCaseMessage.includes("question") || lowerCaseMessage.includes("?")) {
+    } else if (lowerCaseMessage.includes("question") || lowerCaseMessage.includes("?") || lowerCaseMessage.includes("faq") || lowerCaseMessage.includes("answer")) {
       // Return a random FAQ for demonstration
       const randomFaq = faqs[Math.floor(Math.random() * faqs.length)];
       return `${randomFaq.question}\n\n${randomFaq.answer}`;
     }
     
-    // Modified fallback response to be more helpful
-    return "I'm not sure I understood your message. I can help you with information about job opportunities, upcoming events, mentorship programs, or resources for women's professional development. Could you please try rephrasing your question, or select one of the quick action buttons below?";
+    // Modified fallback response to be more conversational
+    return "I'm not quite sure what you're asking. I can help you with job opportunities, upcoming events, mentorship programs, or resources for women's professional development. Could you please try asking in a different way, or select one of the quick action buttons below?";
   };
 
   // Handle sending a new message
