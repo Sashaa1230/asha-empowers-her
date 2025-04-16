@@ -49,6 +49,28 @@ const ChatContainer = () => {
   const generateResponse = (userMessage: string): string | JSX.Element => {
     const lowerCaseMessage = userMessage.toLowerCase();
     
+    // Handle greetings
+    const greetingPatterns = ['hello', 'hi', 'hey', 'greetings', 'howdy', 'hola', 'namaste', 'sup'];
+    if (greetingPatterns.some(pattern => lowerCaseMessage.includes(pattern))) {
+      return "Hello! I'm ASHA, the AI assistant for JobsForHer Foundation. How can I help you today? You can ask me about job opportunities, events, mentorship programs, or resources for women's professional growth.";
+    }
+
+    // Handle casual conversations
+    if (['how are you', 'how\'s it going', 'how are things'].some(pattern => lowerCaseMessage.includes(pattern))) {
+      return "I'm doing well, thank you for asking! I'm here and ready to assist you with information about job opportunities, events, mentorship programs, or resources for women's career development. What can I help you with today?";
+    }
+
+    // Handle thank you messages
+    if (['thank', 'thanks', 'appreciate'].some(pattern => lowerCaseMessage.includes(pattern))) {
+      return "You're welcome! I'm happy to help. Is there anything else you'd like to know about JobsForHer Foundation's services or resources?";
+    }
+
+    // Handle goodbye messages
+    if (['bye', 'goodbye', 'see you', 'talk later'].some(pattern => lowerCaseMessage.includes(pattern))) {
+      return "Goodbye! Feel free to return anytime you need assistance with your career journey. Have a great day!";
+    }
+    
+    // Original response logic
     if (lowerCaseMessage.includes("job") || lowerCaseMessage.includes("work") || lowerCaseMessage.includes("career")) {
       const jobsResponse = (
         <>
@@ -118,8 +140,8 @@ const ChatContainer = () => {
       return `${randomFaq.question}\n\n${randomFaq.answer}`;
     }
     
-    // Default response
-    return botResponses.fallback;
+    // Modified fallback response to be more helpful
+    return "I'm not sure I understood your message. I can help you with information about job opportunities, upcoming events, mentorship programs, or resources for women's professional development. Could you please try rephrasing your question, or select one of the quick action buttons below?";
   };
 
   // Handle sending a new message
