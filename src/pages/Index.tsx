@@ -1,11 +1,19 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import Sidebar from "@/components/Sidebar";
+import ChatContainer from "@/components/ChatContainer";
+import ResourcesPanel from "@/components/ResourcesPanel";
 
 const Index = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
+    <div className="flex h-screen overflow-hidden bg-gray-100">
+      <Sidebar />
+      <div className="flex-grow flex overflow-hidden">
+        <div className="flex-grow overflow-hidden">
+          <ChatContainer />
+        </div>
+        <div className="w-80 hidden md:block overflow-y-auto">
+          <ResourcesPanel />
+        </div>
       </div>
     </div>
   );
